@@ -1,0 +1,25 @@
+Question : Given an array nums and a target target, we need to find the smallest contiguous subarray whose sum is ≥ target. If no such subarray exists, return 0. The optimal approach uses the Sliding Window technique to achieve O(N) time complexity.
+
+code: class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();  
+        int minLength = INT_MAX; // Minimum subarray length
+        int i = 0, j = 0; // Sliding window pointers
+        int sum = 0; // Current window sum
+
+        while (j < n) {  
+            sum += nums[j]; // Add current element to the sum
+            j++; // Expand the window
+
+            while (sum >= target) { // Check if sum meets/exceeds the target
+                minLength = min(minLength, j - i); // Update minimum length
+                sum -= nums[i]; // Remove leftmost element to shrink the window
+                i++; // Move the left pointer forward
+            }
+        }
+
+        return minLength == INT_MAX ? 0 : minLength; // If no valid subarray found, return 0
+    }
+};
+

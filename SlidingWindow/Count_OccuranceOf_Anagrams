@@ -1,0 +1,63 @@
+<!-- ### **Problem Name:** Count Occurrences of Anagrams  
+
+### **Explanation:**  
+Given a string `txt` and a pattern `pat`, we need to find how many times any anagram of `pat` appears as a substring in `txt`. We can solve this efficiently using the **Sliding Window + Frequency Array** approach. The key idea is to maintain a window of size equal to `pat.length` and check if the frequency of characters matches with `pat`.  
+
+#### **Example Walkthrough:**  
+For `txt = "forxxorfxdofr"` and `pat = "for"`, possible anagrams of `"for"` in `txt` are:  
+- `"for"`  
+- `"orf"`  
+- `"ofr"`  
+Thus, the output is **3**.  
+
+#### **Expected Complexity:**  
+- **Time Complexity:** **O(N)** (using Sliding Window Technique)  
+- **Space Complexity:** **O(1)** (since we only use constant extra space for frequency arrays)  
+
+This problem is frequently asked in interviews at **Flipkart, Amazon, Microsoft, and Intuit**. 🚀 -->
+
+
+class Solution {
+  public:
+
+  // Function to check if all elements in count array are zero
+  bool AllZeros(vector<int>count) {
+      for(int &i: count) {
+          if(i != 0) // If any value is non-zero, return false
+              return false;
+      }
+      return true; // If all values are zero, return true
+  }
+
+  int search(string &pat, string &txt) {
+      int k = pat.size(); // Length of the pattern
+      vector<int>count(26, 0); // Array to track character frequency
+
+      // Count the frequency of each character in the pattern
+      
+      for(char &ch: pat) {
+          count[ch - 'a']++;  
+      }
+
+      int result = 0; // Final count of anagram occurrences
+      int i = 0, j = 0; // Sliding window pointers
+      int n = txt.size(); // Length of the text
+
+      while(j < n) { 
+          int idx = txt[j] - 'a'; 
+          count[idx]--; // Include the current character in the window
+
+          // When the window size matches the pattern length
+          if(j - i + 1 == k) {  
+              if(AllZeros(count)) // If all elements in count array are zero, it's a valid anagram
+                  result++;
+
+              // Remove the oldest character from the window to slide forward
+              count[txt[i] - 'a']++;  
+              i++; // Move the left pointer ahead
+          }
+          j++; // Expand the window
+      }
+      return result; // Return the total count of anagram occurrences
+  }
+};
