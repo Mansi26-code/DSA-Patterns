@@ -1,0 +1,71 @@
+Slide a window of size `k` over the array and track the first negative number using a queue. If no negative number is found in a window, return `0`.  
+
+
+Brute force solution O(n^3)
+
+class Solution {
+  public:
+    vector<int> firstNegInt(vector<int>& arr, int k) {
+        // Get the size of the array
+        int n = arr.size();
+
+        // Create a result vector of size (n-k+1) initialized with 0
+        vector<int> ans(n - k + 1, 0);  
+
+        // Loop to traverse each window
+        for (int i = 0; i <= n - k; i++) {  
+            
+            // Loop to define the window range
+            for (int j = i + k - 1; j < n; j++) {  
+
+                // Loop to find the first negative integer in the window
+                for (int m = i; m <= j; m++) {  
+                    if (arr[m] < 0) {  
+                        ans[i] = arr[m];  // Store first negative integer
+                        break;  
+                    }
+                }
+
+                // Break after processing one window
+                break;  
+            }
+        }
+
+        // Return the result vector
+        return ans;
+    }
+};
+
+
+
+
+//Better O(n^2)
+
+class Solution {
+  public:
+    vector<int> firstNegInt(vector<int>& arr, int k) {
+        // write code here
+        int n=arr.size();
+        vector<int>ans(n-k+1);
+       
+       
+       for(int i=0;i<n-k+1;i++)
+       {
+           for(int j=i;j<i+k;j++)
+           {
+               if(arr[j]<0)
+               {
+                   ans[i]=arr[j];
+                   break;
+               }
+              
+           }
+       }
+ 
+        return ans;
+        
+    }
+};
+
+
+
