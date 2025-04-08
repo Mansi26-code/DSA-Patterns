@@ -64,33 +64,4 @@ class Solution {
 
 
 
-Best approach O(n)
 
-
-class Solution {
-  public:
-    vector<int> firstNegInt(vector<int>& arr, int k) {
-        int n = arr.size();
-        vector<int> ans; 
-        int l = 0, r = 0;
-        queue<int> q; // Negative numbers ke indices store karne ke liye
-
-        while (r < n) {
-            if (arr[r] < 0) {
-                q.push(r); // Negative number mila toh queue me daalo
-            }
-
-            if (r - l + 1 == k) { // Jab window size k ka ho jaye
-                if (!q.empty() && q.front() < l) { 
-                    q.pop(); // Window ke bahar wala negative hata do
-                }
-
-                ans.push_back(q.empty() ? 0 : arr[q.front()]); // Answer store karo
-
-                l++; // Window ko aage badhao
-            }
-            r++;
-        }
-        return ans;
-    }
-};
