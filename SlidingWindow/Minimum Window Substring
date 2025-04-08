@@ -1,0 +1,45 @@
+class Solution {
+public:
+    bool AllZero(vector<int>& count) {
+        for (int &i : count) {
+            if (i > 0) return false;
+        }
+        return true;
+    }
+
+    string minWindow(string s, string t) {
+        vector<int> count(128, 0); // 128 kyunki uppercase bhi ho sakta hai
+        for (char &ch : t) {
+            count[ch]++; // `t` wale characters ka count store kiya
+        }
+
+        int l = 0, r = 0, minLength = INT_MAX;
+        int startIdx = 0; // Minimum substring start index
+        int n = s.size();
+        int neededChars = t.size(); // Kitne characters chahiye
+        string res = "";
+
+        while (r < n) {
+            if (count[s[r]] > 0) { 
+                neededChars--; // Ek required character mila, toh neededChars kam karo
+            }
+            count[s[r]]--; // Har character ka count decrement karo
+            r++; // Window expand karo
+
+            while (neededChars == 0) { // Jab `t` ka sab kuch mil gaya
+                if (r - l < minLength) { 
+                    minLength = r - l;
+                    startIdx = l;
+                }
+
+                count[s[l]]++; // Window chhoti karne ke liye `l` wale character ko wapas daalo
+                if (count[s[l]] > 0) { 
+                    neededChars++; // NeededChars wapas badhao
+                }
+                l++; // Window shrink karo
+            }
+        }
+
+        return minLength == INT_MAX ? "" : s.substr(startIdx, minLength);
+    }
+};
