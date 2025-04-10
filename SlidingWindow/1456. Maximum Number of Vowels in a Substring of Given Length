@@ -1,0 +1,52 @@
+
+Question:
+
+Given a string s and an integer k, find the maximum number of vowels in any substring of length k.
+
+Time & Space Complexity
+Time Complexity (TC): O(N) (We traverse the string once using the sliding window technique)
+
+Space Complexity (SC): O(1) (Only a few extra variables are used, no extra data structures)
+
+
+
+class Solution {
+public:
+// Function to check if a character is a vowel
+bool isVowel(char &ch)
+{
+    return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+}
+
+int maxLen=INT_MIN;
+
+int maxVowels(string s, int k) {
+    int maxLen = INT_MIN;  // Maximum count of vowels in any window of size 'k'
+    int n = s.size();  // Size of the given string
+    int count = 0;  // Current count of vowels in the window
+
+    int l = 0, r = 0;  // Left and right pointers for the sliding window
+
+    while (r < n) {  // Iterate through the string
+        // Agar current character vowel hai toh count badhao
+        if (isVowel(s[r])) {
+            count++;
+        }
+
+        // Jab window ka size 'k' ho jaye
+        if (r - l + 1 == k) {
+            maxLen = max(maxLen, count);  // Maximum vowel count update karo
+            
+            // Agar left pointer pe vowel hai toh count kam karo (kyunki window slide karegi)
+            if (isVowel(s[l])) {
+                count--;
+            }
+            l++;  // Left pointer ko aage badhao taaki window slide ho sake
+        }
+
+        r++;  // Right pointer ko aage badhao taaki window expand ho
+    }
+
+    return maxLen;  // Sabse zyada vowels wala window ka count return karo
+}
+};
