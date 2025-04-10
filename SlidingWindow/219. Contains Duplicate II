@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        unordered_map<int, int> mp;
+        int l = 0, r = 0;
+        int n = nums.size();
+
+        while (r < n) {
+            mp[nums[r]]++;  // Current element ko map me daal diya
+
+            if (mp[nums[r]] > 1) { // Duplicate found
+                return true;
+            }
+
+            if (r - l >= k) { // Window size maintain karni hai
+                mp[nums[l]]--; // Leftmost element hata rahe hain
+                if (mp[nums[l]] == 0) {
+                    mp.erase(nums[l]);
+                }
+                l++; // Left pointer badha diya
+            }
+
+            r++; // Right pointer badha diya
+        }
+        return false;
+    }
+};
