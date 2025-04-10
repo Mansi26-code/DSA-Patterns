@@ -1,0 +1,49 @@
+
+
+Question:
+
+We are given an array nums and two values, minK and maxK. We need to count subarrays where:
+
+Both minK and maxK are present.
+
+Every element in the subarray lies within the range [minK, maxK] (i.e., no element is smaller than minK or greater than maxK).
+
+Time & Space Complexity:
+Time Complexity (TC): O(N) (We traverse the array only once).
+
+Space Complexity (SC): O(1) (No extra space is used).
+
+
+
+
+
+
+
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int minK, int maxK) {
+        long long count = 0;
+        int minIndex = -1, maxIndex = -1, leftPos = -1; 
+        int n = nums.size();
+
+        for (int i = 0; i < n; i++) {
+            // Agar koi number minK se chhota ya maxK se bada hai, toh valid subarray ka start badalna padega
+            if (nums[i] < minK || nums[i] > maxK) {
+                leftPos = i;
+            }
+
+            // Jab maxK milta hai toh uska last index update karte hain
+            if (nums[i] == maxK) 
+                maxIndex = i;
+
+            // Jab minK milta hai toh uska last index update karte hain
+            if (nums[i] == minK) 
+                minIndex = i;
+
+            // Valid subarray tabhi banega jab minK aur maxK dono ke index milein,
+            // toh min(minIndex, maxIndex) - leftPos se count badhta hai
+            count += max(0, min(maxIndex, minIndex) - leftPos);
+        }
+        return count;
+    }
+};
