@@ -1,3 +1,13 @@
+
+Topo Sort 
+Sbse pehle har node ke liye inDegree nikal lo by iterating over the adjacency list.
+Phir ek queue banao, jisme initially vo sare nodes daalo jinka inDegree == 0 ho.
+Queue se top element uthao, ans me daalo, fir uske sare adjacent nodes traverse karo aur
+unka inDegree-- karo. Agar kisi ka inDegree 0 ho jaye to usko queue me daal do. Jab tak queue empty na ho,
+ye process chalte raho.
+
+
+
 class Solution{
     public:
         vector<int> topoSort(int V, vector<int> adj[]){
