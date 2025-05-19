@@ -1,0 +1,37 @@
+/*
+🧾 Problem: Implement Lower Bound using Binary Search
+
+The **lower bound** of a number `x` in a sorted array `nums` is the index of the **first element that is greater than or equal to `x`**.
+It mimics the behavior of `std::lower_bound()` in C++ STL.
+
+If all elements are smaller than `x`, it should return `nums.size()`.
+
+Approach:
+- Perform binary search.
+- If nums[mid] >= x → it could be our potential answer, but check left half for a better candidate.
+- Else → search right half.
+
+*/
+
+class Solution {
+public:
+    int lowerBound(vector<int> &nums, int x) {
+        int s = 0;
+        int e = nums.size() - 1;
+        int ans = nums.size(); // Default answer if no element >= x
+
+        while (s <= e) {
+            int mid = s + (e - s) / 2;
+
+            if (nums[mid] >= x) {
+                ans = mid;     // Store index as a potential answer
+                e = mid - 1;   // Look for better (smaller index) candidate in left half
+            }
+            else {
+                s = mid + 1;   // Look in right half
+            }
+        }
+
+        return ans; // Index of first element >= x
+    }
+};
