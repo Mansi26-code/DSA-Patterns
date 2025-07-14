@@ -1,52 +1,42 @@
 class Solution {
 public:
 
-    // 🔁 Recursive DP function to calculate max points from day 0 to 'day' with last task as 'last'
-    int solve(int day, int last, vector<vector<int>>& arr, vector<vector<int>>& dp) {
+int solve(int day, int last, vector<vector<int>>&matrix, vector<vector<int>>&dp)
+{
+    if(dp[day][last]!=-1)
+    return dp[day][last];
+
+    if(day==0)
+    {
+        int maxi=0;
+        for(int i=0;i<=2;i++)
+        {
+            if(i!=last)
+            {
+                maxi=max(maxi,matrix[0][i]);
+
+            }
+         
+        }
+        return dp[day][last]=maxi;
         
-        // 🧱 Base Case: On day 0, pick the task that is NOT equal to 'last'
-        if (day == 0) {
-            int maxi = 0;
-
-            for (int task = 0; task < 3; task++) {
-                if (task != last) {
-                    maxi = max(maxi, arr[0][task]);  // Pick best task not equal to last
-                }
-            }
-
-            return dp[day][last] = maxi;
-        }
-
-        // 🧠 Memoization check
-        if (dp[day][last] != -1)
-            return dp[day][last];
-
-        int maxi = 0;
-
-        // 🔁 Try all 3 tasks except the one done on the last day
-        for (int task = 0; task < 3; task++) {
-            if (task != last) {
-                int point = arr[day][task] + solve(day - 1, task, arr, dp);
-                maxi = max(maxi, point);  // Take max of all possible choices
-            }
-        }
-
-        return dp[day][last] = maxi;
     }
-
-    int maximumPoints(vector<vector<int>>& arr) {
-        int n = arr.size();  // 🔢 Total number of days
-
-        // 🧾 DP array: dp[day][lastTask]
-        // lastTask ∈ {0,1,2,3} → 3 means "no task was done yesterday" (used only at start)
-        vector<vector<int>> dp(n, vector<int>(4, -1));
-
-        // 🔁 Start from last day, with 'no last task' = 3
-        return solve(n - 1, 3, arr, dp);
+    int maxi=0;
+    for(int i=0;i<=2;i++)
+    {
+       if(i!=last)
+       {
+         int activity=matrix[day][i]+ solve(day-1,i,matrix,dp);
+         maxi=max(maxi,activity);
+       }
+    }
+    return dp[day][last]=maxi;
+  
+}
+    int ninjaTraining(vector<vector<int>>& matrix) {
+        int day=matrix.size();
+        vector<vector<int>>dp(day,vector<int>(4,-1));
+        int last=3;
+        return solve(day-1,last,matrix,dp);
     }
 };
-
-
-Time Complexity: O(n)
-
-Space Complexity: O(n) (DP array) + O(n) (recursion stack) = O(n)
